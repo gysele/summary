@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>summary</artifactId>
+    <groupId>org.wxm.summary</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <artifactId>summary-model-dao</artifactId>
+  <name>summary-model-dao</name>
+  <description>技术总结-持久模型层。负责表的增删改查操作，不涉及复杂逻辑</description>
+
+  <!-- 变量设置 -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+    <version.java>1.7</version.java>
+    <version.maven-compiler-plugin>2.3.2</version.maven-compiler-plugin>
+    <version.maven-source-plugin>2.1.2</version.maven-source-plugin>
+  </properties>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <!-- 设置JDK版本 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven-compiler-plugin}</version>
+        <configuration>
+          <source>${version.java}</source>
+          <target>${version.java}</target>
+          <compilerArguments>
+            <endorseddirs>${endorsed.dir}</endorseddirs>
+          </compilerArguments>
+        </configuration>
+      </plugin>
+      <!-- 源代码打包插件。该插件主要用于在打jar包时，把源代码也打成jar包 。 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${version.maven-source-plugin}</version>
+        <configuration>
+          <finalName>${project.build.name}</finalName>
+          <attach>true</attach>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- 依赖JAR包 -->
+  <dependencies>
+    <!-- summary-核心通用类包 -->
+    <dependency>
+      <groupId>org.wxm.summary</groupId>
+      <artifactId>summary-core</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <!-- summary-实体视图对象类包 -->
+    <dependency>
+      <groupId>org.wxm.summary</groupId>
+      <artifactId>summary-model-povo</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+  </dependencies>
+</project>
