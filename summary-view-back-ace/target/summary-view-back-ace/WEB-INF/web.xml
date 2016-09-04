@@ -3,6 +3,11 @@
   http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
   <display-name>summary</display-name>
 
+  <!--系统默认页面 -->
+  <welcome-file-list>
+    <welcome-file>/login</welcome-file>
+  </welcome-file-list>
+
   <!-- 使用Spring中的过滤器解决在请求和应答中的中文乱码问题。编码统一最好放最上面，最先加载，防止乱码 -->
   <filter>
     <filter-name>characterEncodingFilter</filter-name>

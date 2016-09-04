@@ -83,6 +83,39 @@ public class ShiroSecurityRealm extends AuthorizingRealm {
             throw new LockedAccountException();
         }
 
+        // 可扩展异常，如下：
+        // <!-- 身份认证异常 -->
+        // <!-- 身份令牌异常，不支持的身份令牌 -->
+        // org.apache.shiro.authc.pam.UnsupportedTokenException
+        // <!-- 未知账户/没找到帐号,登录失败 -->
+        // org.apache.shiro.authc.UnknownAccountException
+        // <!-- 帐号锁定 -->
+        // org.apache.shiro.authc.LockedAccountException
+        // <!-- 用户禁用 -->
+        // org.apache.shiro.authc.DisabledAccountException
+        // <!-- 登录重试次数，超限。只允许在一段时间内允许有一定数量的认证尝试 -->
+        // org.apache.shiro.authc.ExcessiveAttemptsException
+        // <!-- 一个用户多次登录异常：不允许多次登录，只能登录一次 。即不允许多处登录-->
+        // org.apache.shiro.authc.ConcurrentAccessException
+        // <!-- 账户异常 -->
+        // org.apache.shiro.authc.AccountException
+        // <!-- 过期的凭据异常 -->
+        // org.apache.shiro.authc.ExpiredCredentialsException
+        // <!-- 错误的凭据异常 -->
+        // org.apache.shiro.authc.IncorrectCredentialsException
+        // <!-- 凭据异常 -->
+        // org.apache.shiro.authc.CredentialsException
+        // org.apache.shiro.authc.AuthenticationException
+        // <!-- 权限异常 -->
+        // <!-- 没有访问权限，访问异常 -->
+        // org.apache.shiro.authz.HostUnauthorizedException
+        // org.apache.shiro.authz.UnauthorizedException
+        // <!-- 授权异常 -->
+        // org.apache.shiro.authz.UnauthenticatedException
+        // org.apache.shiro.authz.AuthorizationException
+        // <!-- shiro全局异常 -->
+        // org.apache.shiro.ShiroException
+
         logger.info("用户登录。[用户名：{}][中文姓名：{}]", userDetail.getUsername(), userDetail.getCnName());
         // 封装返回对象
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(userDetail, password, ByteSource.Util.bytes(username), this.getName());

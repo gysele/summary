@@ -1,16 +1,22 @@
 package org.wxm.summary.security.web;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.wxm.core.util.StringUtils;
 
 /**
@@ -41,8 +47,8 @@ public class SecurityController {
      * 
      * @return
      */
-    @RequestMapping("/loginPage")
-    public String loginPage() {
+    @RequestMapping("/")
+    public String login() {
         return loginPage;
     }
 
@@ -63,13 +69,15 @@ public class SecurityController {
      *            页面参数映射
      * @return
      */
-    @RequestMapping("/login")
-    public String login(String username, String password, ModelMap modelMap) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public String login(String username, String password, HttpServletResponse response) {
+        String loginMsg = null;
         try {
             if (StringUtils.isEmpty(username)) {
-                modelMap.put("loginMsg", "用户名不能为空！");
+                loginMsg = "用户名不能为空！";
             } else if (StringUtils.isEmpty(password)) {
-                modelMap.put("loginMsg", "密码不能为空！");
+                loginMsg = "密码不能为空！";
             } else {
                 UsernamePasswordToken token = new UsernamePasswordToken(username, password);
                 Subject currentUser = SecurityUtils.getSubject();
@@ -77,19 +85,20 @@ public class SecurityController {
                     token.setRememberMe(true);
                     currentUser.login(token);
                 }
+                response.sendRedirect("/index");
                 return indexPage;
             }
         } catch (UnknownAccountException e) {
-            modelMap.put("loginMsg", "用户名或密码不正确！");
+            loginMsg = "用户名或密码不正确！";
         } catch (IncorrectCredentialsException e) {
-            modelMap.put("loginMsg", "用户名或密码不正确！");
+            loginMsg = "用户名或密码不正确！";
         } catch (LockedAccountException e) {
-            modelMap.put("loginMsg", "账号已被锁定，请联系管理员！");
+            loginMsg = "账号已被锁定，请联系管理员！";
         } catch (Exception e) {
+            loginMsg = e.getMessage();
             logger.error("捕获异常：", e);
-            modelMap.put("loginMsg", e.getMessage());
         }
-        return loginPage;
+        return loginMsg;
     }
 
     /**
@@ -105,6 +114,45 @@ public class SecurityController {
      */
     @RequestMapping("/index")
     public String index() {
+        return indexPage;
+    }
+
+    /**
+     * 
+     * <b>标题: </b>操作管理页面 <br/>
+     * <b>描述: </b> <br/>
+     * <b>版本: </b>V1.0 <br/>
+     * <b>作者: </b>吴晓敏 15109870670@139.com <br/>
+     * <b>时间: </b>2016年8月29日 下午8:37:25 <br/>
+     * <b>修改记录: </b>
+     * 
+     * @param modelMap
+     * @return
+     */
+    @RequiresPermissions("EDIT")
+    @RequiresRoles("ArticleManage")
+    @RequestMapping("/system/operate/list")
+    public String operateList(ModelMap modelMap) {
+        modelMap.put("page", "/system/operate/list");
+        return indexPage;
+    }
+
+    /**
+     * 
+     * <b>标题: </b>新闻管理页面 <br/>
+     * <b>描述: </b> <br/>
+     * <b>版本: </b>V1.0 <br/>
+     * <b>作者: </b>吴晓敏 15109870670@139.com <br/>
+     * <b>时间: </b>2016年8月29日 下午8:41:51 <br/>
+     * <b>修改记录: </b>
+     * 
+     * @param modelMap
+     * @return
+     */
+    @RequiresRoles("articlemanage")
+    @RequestMapping("/information/news/list")
+    public String newsList(ModelMap modelMap) {
+        modelMap.put("page", "/information/news/list");
         return indexPage;
     }
 

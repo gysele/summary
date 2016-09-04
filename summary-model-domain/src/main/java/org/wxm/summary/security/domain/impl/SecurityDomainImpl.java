@@ -1,10 +1,11 @@
-package org.wxm.summary.security.domain;
+package org.wxm.summary.security.domain.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wxm.summary.security.dao.SecurityDao;
+import org.wxm.summary.security.domain.SecurityDomain;
 import org.wxm.summary.security.view.UserDetail;
 import org.wxm.summary.system.view.VSysMenu;
 
@@ -17,7 +18,7 @@ import org.wxm.summary.system.view.VSysMenu;
  * <b>修改记录: </b>
  * 
  */
-@Service
+@Service("securityDomain")
 public class SecurityDomainImpl implements SecurityDomain {
     @Autowired
     private SecurityDao securityDao; // 用户权限DAO接口

@@ -8,13 +8,33 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
 <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
-
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+    $("input[type=submit]").click(function() {
+        $.ajax({
+            type : "POST", //提交方式  
+            url : "/login",//路径  
+            data : {
+                "username" : $("input[name=username]")val(),
+                "password" : $("input[name=password]")val()
+            },//数据，这里使用的是Json格式进行传输  
+            success : function(result) {//返回数据根据结果进行相应的处理  
+                if (result.loginMsg) {
+                    alert(loginMsg);
+                }
+            }
+        });
+    })
+</script>
 </head>
 
 <body>
-${loginMsg!''}
-  <form action="/login" method="post">
-    username: <input type="text" name="username"><br> password: <input type="password" name="password"><br> <input type="submit" value="登录">
-  </form>
+  ${loginMsg!''}
+  </br>username:
+  <input type="text" name="username">
+  </br> password:
+  <input type="password" name="password">
+  </br>
+  <input type="submit" value="登录">
 </body>
 </html>
