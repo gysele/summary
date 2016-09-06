@@ -1,0 +1,9 @@
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('1', '1', '1');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('2', '2', '2');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('3', '2', '3');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('4', '2', '5');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('5', '3', '3');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('6', '3', '6');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('7', '4', '5');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('8', '4', '4');
+INSERT INTO `wxm_mhly_sys_user_role` VALUES ('9', '4', '2');
