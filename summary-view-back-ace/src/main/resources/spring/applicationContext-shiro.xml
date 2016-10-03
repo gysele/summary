@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-                      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
                       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
   <!-- 項目自定义的Realm -->
-  <bean id="shiroSecurityRealm" class="org.wxm.summary.security.service.impl.ShiroSecurityRealm">
-    <property name="cacheManager" ref="cacheManager" />
-  </bean>
+  <bean id="shiroSecurityRealm" class="org.wxm.summary.security.service.impl.ShiroSecurityRealm"></bean>
 
-  <!-- 用户授权信息Cache -->
-  <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"></bean>
-
-  <!-- Shiro默认会使用Servlet容器的Session,可通过sessionMode属性来指定使用Shiro原生Session -->
   <!-- 即<property name="sessionMode" value="native"/>,详细说明见官方文档 -->
   <!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->
   <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
     <property name="realm" ref="shiroSecurityRealm" />
-    <property name="cacheManager" ref="cacheManager" />
   </bean>
 
   <!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->
@@ -30,7 +22,7 @@
     <property name="loginUrl" value="/" />
     <!-- 登录成功后要跳转的连接 -->
     <property name="successUrl" value="/index" />
-    <!-- 用户访问未对其授权的资源时,所显示的连接（不起作用）-->
+    <!-- 用户访问未对其授权的资源时,所显示的连接（不起作用） -->
     <!-- <property name="unauthorizedUrl" value="/login" /> -->
     <!-- Shiro连接约束配置,即过滤链的定义 -->
     <!-- 此处可配合我的这篇文章来理解各个过滤连的作用http://blog.csdn.net/jadyer/article/details/12172839 -->
@@ -39,11 +31,11 @@
     <!-- authc：该过滤器下的页面必须验证后才能访问,它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter -->
     <property name="filterChainDefinitions">
       <value>
-        /assert/**=anon
-        /loginPage=anon
+        /js/**=anon
+        /css/**=anon
         /login=anon
         /verifyCode=anon
-        /** = perms
+        /**=authc
       </value>
     </property>
   </bean>
@@ -57,23 +49,12 @@
     <property name="proxyTargetClass" value="true" />
   </bean>
 
+
+  <bean id="exceptionHandler" class="org.wxm.summary.security.service.impl.MyExceptionHandler" />
+
+
   <!-- 异常解决 -->
-  <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-    <property name="exceptionMappings">
-      <props>
-        <prop key="org.apache.shiro.authz.UnauthorizedException">/errors/unauthorized</prop>
-        <prop key="java.lang.Throwable">/errors/500</prop>
-      </props>
-    </property>
-    <property name="statusCodes">
-      <props>
-        <prop key="500">500</prop>
-        <prop key="404">404</prop>
-        <prop key="403">403</prop>
-      </props>
-    </property>
-    <property name="warnLogCategory" value="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" />
-    <property name="defaultErrorView" value="/errors/500" />
-    <property name="defaultStatusCode" value="200" />
-  </bean>
+  <!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> <property name="exceptionMappings"> <props> <prop key="org.apache.shiro.authz.UnauthorizedException">/errors/unauthorized</prop> 
+    </props> </property> <property name="statusCodes"> <props> <prop key="500">500</prop> <prop key="404">404</prop> <prop key="403">403</prop> </props> </property> <property name="warnLogCategory" value="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" 
+    /> <property name="defaultErrorView" value="/errors/500" /> <property name="defaultStatusCode" value="200" /> </bean> -->
 </beans>

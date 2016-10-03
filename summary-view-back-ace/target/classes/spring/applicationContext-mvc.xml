@@ -5,7 +5,6 @@
                       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
                       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
                       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-                      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
                       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
   <!-- 注册了DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个bean，配置一些messageconverter。即解决了@Controller注解的使用前提配置 -->
@@ -16,15 +15,18 @@
   </mvc:annotation-driven>
 
   <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
-  <context:component-scan base-package="org.wxm.summary"></context:component-scan>
+  <context:component-scan base-package="org.wxm.summary.**.domain"></context:component-scan>
+  <context:component-scan base-package="org.wxm.summary.**.service"></context:component-scan>
 
   <!-- 自动扫描且只扫描@Controller -->
-  <context:component-scan base-package="org.wxm.summary" use-default-filters="false">
+  <context:component-scan base-package="org.wxm.summary.**.web" use-default-filters="false">
     <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+    <context:exclude-filter expression="org.springframework.stereotype.Service" type="annotation" />
   </context:component-scan>
 
   <!-- 开启Shiro方法注解权限验证功能 -->
+  <!-- <aop:aspectj-autoproxy proxy-target-class="true"/> -->
   <aop:config proxy-target-class="true" />
 
   <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
@@ -49,10 +51,8 @@
   <mvc:resources location="/WEB-INF/assert/img/" mapping="/img/**" />
   <mvc:resources location="/WEB-INF/assert/images/" mapping="/images/**" />
   <mvc:resources location="/WEB-INF/assert/base/" mapping="/base/**" />
-  <mvc:resources location="/WEB-INF/assert/errors/" mapping="/errors/**" />
 
-  <!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
-  <!-- 设置freeMarker的配置文件路径 -->
+  <!-- 配置freeMarker视图解析器 -->
   <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
     <property name="templateLoaderPath" value="" />
     <property name="freemarkerSettings">
@@ -72,8 +72,7 @@
       </props>
     </property>
   </bean>
-  <!-- 配置freeMarker视图解析器 -->
-  <!-- FreeMarker视图解析 如返回student。。在这里配置后缀名FTL和视图解析器。。 -->
+  <!-- 设置freeMarker的配置文件路径 -->
   <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"></property>
     <property name="prefix" value="/WEB-INF/views/pages/" />

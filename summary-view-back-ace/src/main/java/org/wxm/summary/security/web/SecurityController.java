@@ -86,7 +86,7 @@ public class SecurityController {
                     currentUser.login(token);
                 }
                 response.sendRedirect("/index");
-                return indexPage;
+                //return indexPage;
             }
         } catch (UnknownAccountException e) {
             loginMsg = "用户名或密码不正确！";
@@ -129,8 +129,7 @@ public class SecurityController {
      * @param modelMap
      * @return
      */
-    @RequiresPermissions("EDIT")
-    @RequiresRoles("ArticleManage")
+    @RequiresPermissions("REMOVE")
     @RequestMapping("/system/operate/list")
     public String operateList(ModelMap modelMap) {
         modelMap.put("page", "/system/operate/list");

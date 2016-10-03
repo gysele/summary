@@ -158,7 +158,7 @@ public class ShiroSecurityRealm extends AuthorizingRealm {
         String menuOperateFrag = "%s:%s";
         for (VSysMenu menu : menus) {
             // 将数据库中的权限标签 符放入集合
-            menuOperates.add(String.format(menuOperateFrag, menu.getMenuUrl(), menu.getOpCode()));
+            menuOperates.add(String.format(menuOperateFrag, menu.getOpCode(), menu.getMenuUrl()));
         }
 
         // 查到权限数据，返回授权信息(要包括 上边的permissions)

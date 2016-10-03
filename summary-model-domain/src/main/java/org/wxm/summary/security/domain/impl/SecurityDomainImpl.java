@@ -36,7 +36,6 @@ public class SecurityDomainImpl implements SecurityDomain {
      *            用户名
      * @return
      */
-    @Override
     public UserDetail findUserByUsername(String username) {
         return securityDao.findUserByUsername(username);
     }
@@ -54,7 +53,6 @@ public class SecurityDomainImpl implements SecurityDomain {
      *            用户ID
      * @return
      */
-    @Override
     public List<VSysMenu> findMenuOperatorByUserId(String userId) {
         return securityDao.findMenuOperatorByUserId(userId);
     }
